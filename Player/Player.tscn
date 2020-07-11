@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.png" type="Texture" id=2]
@@ -6,6 +6,126 @@
 [sub_resource type="CapsuleShape2D" id=62]
 radius = 4.0
 height = 3.99999
+
+[sub_resource type="Animation" id=85]
+resource_name = "AttackEast"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 24, 25, 26, 27 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "attack_animation_finished"
+} ]
+}
+
+[sub_resource type="Animation" id=86]
+resource_name = "AttackNorth"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 28, 29, 30, 31 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "attack_animation_finished"
+} ]
+}
+
+[sub_resource type="Animation" id=87]
+resource_name = "AttackSouth"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 36, 37, 38, 39 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "attack_animation_finished"
+} ]
+}
+
+[sub_resource type="Animation" id=88]
+resource_name = "AttackWest"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 32, 33, 34, 35 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "attack_animation_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=67]
 resource_name = "IdleEast"
@@ -139,6 +259,31 @@ tracks/0/keys = {
 "values": [ 12, 13, 14, 15, 16, 17 ]
 }
 
+[sub_resource type="AnimationNodeAnimation" id=89]
+animation = "AttackWest"
+
+[sub_resource type="AnimationNodeAnimation" id=90]
+animation = "AttackSouth"
+
+[sub_resource type="AnimationNodeAnimation" id=91]
+animation = "AttackEast"
+
+[sub_resource type="AnimationNodeAnimation" id=92]
+animation = "AttackNorth"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=93]
+blend_point_0/node = SubResource( 89 )
+blend_point_0/pos = Vector2( -1, 0 )
+blend_point_1/node = SubResource( 90 )
+blend_point_1/pos = Vector2( 0, 1.1 )
+blend_point_2/node = SubResource( 91 )
+blend_point_2/pos = Vector2( 1, 0 )
+blend_point_3/node = SubResource( 92 )
+blend_point_3/pos = Vector2( 0, -1.1 )
+min_space = Vector2( -1, -1.1 )
+max_space = Vector2( 1, 1.1 )
+blend_mode = 1
+
 [sub_resource type="AnimationNodeAnimation" id=71]
 animation = "IdleWest"
 
@@ -193,12 +338,18 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=84]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=94]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=95]
+
 [sub_resource type="AnimationNodeStateMachine" id=81]
+states/Attack/node = SubResource( 93 )
+states/Attack/position = Vector2( 227.375, 185 )
 states/Idle/node = SubResource( 75 )
 states/Idle/position = Vector2( 226.5, 94 )
 states/Run/node = SubResource( 80 )
 states/Run/position = Vector2( 392, 95 )
-transitions = [ "Idle", "Run", SubResource( 83 ), "Run", "Idle", SubResource( 84 ) ]
+transitions = [ "Idle", "Run", SubResource( 83 ), "Run", "Idle", SubResource( 84 ), "Idle", "Attack", SubResource( 94 ), "Attack", "Idle", SubResource( 95 ) ]
 start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=82]
@@ -217,6 +368,10 @@ rotation = -1.5708
 shape = SubResource( 62 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/AttackEast = SubResource( 85 )
+anims/AttackNorth = SubResource( 86 )
+anims/AttackSouth = SubResource( 87 )
+anims/AttackWest = SubResource( 88 )
 anims/IdleEast = SubResource( 67 )
 anims/IdleNorth = SubResource( 68 )
 anims/IdleSouth = SubResource( 69 )
@@ -229,7 +384,7 @@ anims/RunWest = SubResource( 66 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 81 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 82 )
+parameters/Attack/blend_position = Vector2( -0.0728477, 0.0106101 )
 parameters/Idle/blend_position = Vector2( 0, 0 )
 parameters/Run/blend_position = Vector2( 0, 0 )
