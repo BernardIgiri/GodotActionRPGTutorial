@@ -28,7 +28,10 @@ func _process(delta):
 			pass
 		ATTACK:
 			attack_state(delta)
-	
+
+func _physics_process(delta):
+	velocity = move_and_slide(velocity)
+
 func move_state(delta):
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -44,14 +47,12 @@ func move_state(delta):
 	else:
 		animationState.travel("Idle")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-	velocity = move_and_slide(velocity)
 	if Input.is_action_just_pressed("attack"):
 		state = ATTACK
 
 
 func attack_state(delta):
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-	velocity = move_and_slide(velocity)
 	animationState.travel("Attack")
 
 func attack_animation_finished():
