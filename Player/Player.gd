@@ -1,10 +1,11 @@
 extends KinematicBody2D
 
-const ACCELERATION = 300
-const MAX_VELOCITY = 100
-const ROLL_ACCELERATION = 800
-const ROLL_SPEED = 110
-const FRICTION = 275
+export var ACCELERATION = 300
+export var MAX_VELOCITY = 100
+export var ROLL_ACCELERATION = 800
+export var ROLL_SPEED = 110
+export var FRICTION = 275
+export var START_DIRECTION = Vector2.LEFT
 
 enum {
 	MOVE,
@@ -14,14 +15,21 @@ enum {
 
 var state = MOVE
 var velocity = Vector2.ZERO
-var last_direction = Vector2.LEFT
+var last_direction = START_DIRECTION
 
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
+onready var sword = $HitBoxPivot/SwordHitBox
 
 func _ready():
 	animationTree.active = true
+	sword.knockback = START_DIRECTION
+	last_direction = START_DIRECTION
+	animationTree.set("parameters/Idle/blend_position", START_DIRECTION)
+	animationTree.set("parameters/Run/blend_position", START_DIRECTION)
+	animationTree.set("parameters/Attack/blend_position", START_DIRECTION)
+	animationTree.set("parameters/Roll/blend_position", START_DIRECTION)
 
 func _process(delta):
 	match state:
@@ -46,6 +54,7 @@ func move_state(delta):
 		animationTree.set("parameters/Run/blend_position", input_vector)
 		animationTree.set("parameters/Attack/blend_position", input_vector)
 		animationTree.set("parameters/Roll/blend_position", input_vector)
+		sword.knockback = input_vector
 		animationState.travel("Run")
 		velocity += input_vector * ACCELERATION * delta
 		velocity = velocity.clamped(MAX_VELOCITY)
