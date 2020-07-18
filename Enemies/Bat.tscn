@@ -44,6 +44,7 @@ height = 2.0
 [node name="Bat" type="KinematicBody2D"]
 collision_layer = 0
 script = ExtResource( 2 )
+FRICTION = 20
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12 )

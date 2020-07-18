@@ -54,7 +54,7 @@ func move_state(delta):
 		animationTree.set("parameters/Run/blend_position", input_vector)
 		animationTree.set("parameters/Attack/blend_position", input_vector)
 		animationTree.set("parameters/Roll/blend_position", input_vector)
-		sword.knockback = input_vector
+		sword.knockback = input_vector * sword.knockback_strength
 		animationState.travel("Run")
 		velocity += input_vector * ACCELERATION * delta
 		velocity = velocity.clamped(MAX_VELOCITY)
