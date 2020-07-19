@@ -26,12 +26,15 @@ onready var sword = $HitBoxPivot/SwordHitBox
 func _ready():
 	stats.connect("no_health", self, "die")
 	animationTree.active = true
-	sword.knockback = START_DIRECTION
-	last_direction = START_DIRECTION
-	animationTree.set("parameters/Idle/blend_position", START_DIRECTION)
-	animationTree.set("parameters/Run/blend_position", START_DIRECTION)
-	animationTree.set("parameters/Attack/blend_position", START_DIRECTION)
-	animationTree.set("parameters/Roll/blend_position", START_DIRECTION)
+	set_facing_vector(START_DIRECTION)
+
+func set_facing_vector(direction):
+	sword.knockback = direction * sword.knockback_strength
+	last_direction = direction
+	animationTree.set("parameters/Idle/blend_position", direction)
+	animationTree.set("parameters/Run/blend_position", direction)
+	animationTree.set("parameters/Attack/blend_position", direction)
+	animationTree.set("parameters/Roll/blend_position", direction)
 
 func die():
 	queue_free()
@@ -54,12 +57,7 @@ func move_state(delta):
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
 	if input_vector != Vector2.ZERO:
-		last_direction = input_vector
-		animationTree.set("parameters/Idle/blend_position", input_vector)
-		animationTree.set("parameters/Run/blend_position", input_vector)
-		animationTree.set("parameters/Attack/blend_position", input_vector)
-		animationTree.set("parameters/Roll/blend_position", input_vector)
-		sword.knockback = input_vector * sword.knockback_strength
+		set_facing_vector(input_vector)
 		animationState.travel("Run")
 		velocity += input_vector * ACCELERATION * delta
 		velocity = velocity.clamped(MAX_VELOCITY)
@@ -88,5 +86,5 @@ func roll_animation_finished():
 
 func _on_HurtBox_area_entered(area):
 	stats.health -= area.damage
-	velocity = area.knockback / stats.mass
+	velocity += area.knockback / stats.mass
 	state = MOVE

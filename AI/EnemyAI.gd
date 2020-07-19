@@ -4,6 +4,7 @@ enum {
 	CHASE
 }
 
+var oldstate = IDLE
 var state = IDLE
 var enemy = null
 
@@ -25,7 +26,7 @@ func idle_state(delta):
 		state = CHASE
 
 func recover_state(delta):
-	if !enemy.recover_motion(delta):
+	if enemy.recover_motion(delta):
 		state = IDLE
 
 func chase_state(delta):

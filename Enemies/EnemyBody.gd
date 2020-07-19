@@ -38,7 +38,7 @@ func recover_motion(delta):
 	return velocity == Vector2.ZERO
 
 func idle_motion(delta):
-	recover_motion(delta)
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 func chase_motion(delta):
 	var player = playerDetectionZone.player
@@ -50,7 +50,7 @@ func can_see_player():
 	return playerDetectionZone.can_see_player()
 
 func _on_HurtBox_area_entered(area):
-	velocity = area.knockback / stats.mass
+	velocity += area.knockback / stats.mass
 	stats.health -= area.damage
 	create_hit_effect()
 	ai.hit()
