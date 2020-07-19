@@ -614,7 +614,7 @@ height = 2.0
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
 script = ExtResource( 1 )
-START_DIRECTION = Vector2( 1, 0 )
+START_DIRECTION = Vector2( 0, 1 )
 
 [node name="Shadow" type="Sprite" parent="."]
 texture = ExtResource( 5 )
