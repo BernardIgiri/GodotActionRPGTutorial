@@ -1,9 +1,10 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.png" type="Texture" id=2]
 [ext_resource path="res://Collision/HitBox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Collision/HurtBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Shadows/MediumShadow.png" type="Texture" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
@@ -614,6 +615,9 @@ height = 2.0
 collision_layer = 2
 script = ExtResource( 1 )
 START_DIRECTION = Vector2( 1, 0 )
+
+[node name="Shadow" type="Sprite" parent="."]
+texture = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 1, -9 )

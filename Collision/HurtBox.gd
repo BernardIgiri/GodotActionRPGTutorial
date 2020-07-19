@@ -8,10 +8,8 @@ func is_invicible():
 
 func _on_InvincibilityTimer_timeout():
 	set_deferred("monitorable", true)
-	print("o")
 
 func _on_HurtBox_area_entered(area):
 	if monitorable:
-		print("i")
 		set_deferred("monitorable", false)
 		timer.start(invicibility_timeout)
