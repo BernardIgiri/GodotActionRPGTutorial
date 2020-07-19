@@ -9,7 +9,7 @@ func _ready():
 	set_stats(stats)
 	stats.connect("stats_changed", self, "set_stats")
 
-func set_stats(stats):
-	empty_hearts.rect_size.x = stats.max_health * HEART_WIDTH
-	full_hearts.rect_size.x = stats.health * HEART_WIDTH
-	full_hearts.visible = stats.health > 0
+func set_stats(statValues):
+	empty_hearts.rect_size.x = statValues.max_health * HEART_WIDTH
+	full_hearts.rect_size.x = statValues.health * HEART_WIDTH
+	full_hearts.visible = statValues.health > 0

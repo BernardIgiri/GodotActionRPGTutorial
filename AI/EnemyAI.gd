@@ -7,8 +7,8 @@ enum {
 var state = IDLE
 var enemy = null
 
-func _init(enemy = null):
-	self.enemy = enemy
+func _init(enemyBody = null):
+	self.enemy = enemyBody
 
 func update(delta):
 	match state:

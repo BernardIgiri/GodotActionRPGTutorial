@@ -8,6 +8,7 @@ export var SPEED = 50
 export var ACCELERATION = 150
 onready var stats = $Stats
 onready var playerDetectionZone = $PlayerDetectionZone
+onready var softCollision = $SoftCollision
 var ai = null
 var velocity = Vector2.ZERO
 
@@ -29,6 +30,8 @@ func _physics_process(_delta):
 
 func _process(delta):
 	ai.update(delta)
+	if softCollision.is_colliding():
+		velocity += softCollision.get_push_vector() * delta * SPEED
 
 func recover_motion(delta):
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
