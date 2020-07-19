@@ -1,12 +1,15 @@
-extends "res://Enemies/Enemy.gd"
+extends "res://Enemies/EnemyBody.gd"
+var AI = load("res://AI/EnemyAI.gd")
 
 onready var animation = $AnimatedSprite
 
-func _ready():
-	animation.play("default")
-
 func _process(delta):
-	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+	._process(delta)
+	animation.flip_h = velocity.x < 0
+
+func _ready():
+	ai = AI.new(self)
+	animation.play("default")
 
 func positionEffect(effect):
 	.positionEffect(effect)

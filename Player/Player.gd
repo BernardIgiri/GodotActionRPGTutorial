@@ -16,6 +16,7 @@ enum {
 var state = MOVE
 var velocity = Vector2.ZERO
 var last_direction = START_DIRECTION
+var stats = PlayerStats
 
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
@@ -23,6 +24,7 @@ onready var animationState = animationTree.get("parameters/playback")
 onready var sword = $HitBoxPivot/SwordHitBox
 
 func _ready():
+	stats.connect("no_health", self, "die")
 	animationTree.active = true
 	sword.knockback = START_DIRECTION
 	last_direction = START_DIRECTION
@@ -30,6 +32,9 @@ func _ready():
 	animationTree.set("parameters/Run/blend_position", START_DIRECTION)
 	animationTree.set("parameters/Attack/blend_position", START_DIRECTION)
 	animationTree.set("parameters/Roll/blend_position", START_DIRECTION)
+
+func die():
+	queue_free()
 
 func _process(delta):
 	match state:
@@ -79,4 +84,9 @@ func attack_animation_finished():
 	state = MOVE
 
 func roll_animation_finished():
+	state = MOVE
+
+func _on_HurtBox_area_entered(area):
+	stats.health -= area.damage
+	velocity = area.knockback / stats.mass
 	state = MOVE

@@ -1,8 +1,9 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.png" type="Texture" id=2]
 [ext_resource path="res://Collision/HitBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Collision/HurtBox.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
@@ -605,6 +606,10 @@ start_node = "Idle"
 [sub_resource type="CapsuleShape2D" id=46]
 height = 10.0
 
+[sub_resource type="CapsuleShape2D" id=47]
+radius = 6.0
+height = 2.0
+
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
 script = ExtResource( 1 )
@@ -661,4 +666,14 @@ collision_mask = 8
 shape = SubResource( 46 )
 disabled = true
 
+[node name="HurtBox" parent="." instance=ExtResource( 4 )]
+collision_layer = 4
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2( 1, -5 )
+shape = SubResource( 47 )
+[connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]
+
 [editable path="HitBoxPivot/SwordHitBox"]
+
+[editable path="HurtBox"]
