@@ -7,6 +7,9 @@ func _process(delta):
 	._process(delta)
 	animation.flip_h = velocity.x < 0
 
+func get_position():
+	return 
+
 func _ready():
 	ai = AI.new(self)
 	animation.play("default")

@@ -55,6 +55,7 @@ script = ExtResource( 2 )
 FRICTION = 50
 SPEED = 70
 ACCELERATION = 200
+WANDER_RADIUS = 10
 
 [node name="Shadow" type="Sprite" parent="." index="0"]
 texture = ExtResource( 3 )

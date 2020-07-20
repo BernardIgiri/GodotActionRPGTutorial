@@ -6,11 +6,22 @@ const DeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
 export var FRICTION = 275
 export var SPEED = 50
 export var ACCELERATION = 150
+export var WANDER_RADIUS = 5
+export var WANDER_SPEED = 20
+export var WANDER_TARGET_RANGE = 4
 onready var stats = $Stats
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var softCollision = $SoftCollision
 var ai = null
 var velocity = Vector2.ZERO
+var wander_vector = Vector2.ZERO
+var target_position = Vector2.ZERO
+var anchor_position = Vector2.ZERO
+var collision = false
+
+func _ready():
+	anchor_position = global_position
+	target_position = global_position
 
 func positionEffect(effect):
 	var main = get_tree().current_scene
@@ -26,7 +37,9 @@ func create_death_effect():
 	positionEffect(effect)
 
 func _physics_process(_delta):
+	var oldv = Vector2(velocity.x, velocity.y)
 	velocity = move_and_slide(velocity)
+	collision = oldv != velocity
 
 func _process(delta):
 	ai.update(delta)
@@ -38,7 +51,12 @@ func recover_motion(delta):
 	return velocity == Vector2.ZERO
 
 func idle_motion(delta):
-	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+	if collision || global_position.distance_to(target_position) <= WANDER_TARGET_RANGE:
+		var x = rand_range(-WANDER_RADIUS, WANDER_RADIUS)
+		var y = rand_range(-WANDER_RADIUS, WANDER_RADIUS)
+		target_position = Vector2(x, y) + anchor_position
+		wander_vector = (target_position - global_position).normalized() * WANDER_SPEED
+	velocity = velocity.move_toward(wander_vector, FRICTION * delta)
 
 func chase_motion(delta):
 	var player = playerDetectionZone.player
