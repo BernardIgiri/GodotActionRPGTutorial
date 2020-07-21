@@ -1,15 +1,15 @@
 extends Area2D
 
-export var invicibility_timeout = 0.5
 onready var timer = $InvincibilityTimer
+onready var collision_shape = $CollisionShape2D
 
 func is_invicible():
-	return !monitorable
+	return collision_shape.disabled
 
 func _on_InvincibilityTimer_timeout():
-	set_deferred("monitorable", true)
+	collision_shape.set_deferred("disabled", false)
 
 func _on_HurtBox_area_entered(_area):
-	if monitorable:
-		set_deferred("monitorable", false)
-		timer.start(invicibility_timeout)
+	if !is_invicible():
+		collision_shape.set_deferred("disabled", true);
+		timer.start()

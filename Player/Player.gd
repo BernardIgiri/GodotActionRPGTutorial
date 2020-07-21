@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+const PlayerHurtEffect = preload("res://Effects/PlayerHurtEffect.tscn")
 export var ACCELERATION = 300
 export var MAX_VELOCITY = 100
 export var ROLL_ACCELERATION = 800
@@ -17,11 +18,14 @@ var state = MOVE
 var velocity = Vector2.ZERO
 var last_direction = START_DIRECTION
 var stats = PlayerStats
+var is_invicible = false
 
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var sword = $HitBoxPivot/SwordHitBox
+onready var hurt_box = $HurtBox
+onready var invicible_effect = $InvicibleEffect
 
 func _ready():
 	stats.connect("no_health", self, "die")
@@ -40,6 +44,12 @@ func die():
 	queue_free()
 
 func _process(delta):
+	if is_invicible != hurt_box.is_invicible():
+		is_invicible = hurt_box.is_invicible()
+		if is_invicible:
+			invicible_effect.play("blink")
+		else:
+			invicible_effect.play("default")
 	match state:
 		MOVE:
 			move_state(delta)
@@ -87,4 +97,5 @@ func roll_animation_finished():
 func _on_HurtBox_area_entered(area):
 	stats.health -= area.damage
 	velocity += area.knockback / stats.mass
-	state = MOVE
+	var effect = PlayerHurtEffect.instance()
+	get_tree().current_scene.add_child(effect)
