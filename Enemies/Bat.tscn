@@ -36,7 +36,7 @@ animations = [ {
 "speed": 15.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=12]
+[sub_resource type="CapsuleShape2D" id=8]
 radius = 8.0
 height = 4.0
 
@@ -76,7 +76,7 @@ knockback_strength = 5
 
 [node name="CollisionShape2D" parent="HitBox" index="0"]
 position = Vector2( 0, -9 )
-shape = SubResource( 12 )
+shape = SubResource( 8 )
 
 [node name="HurtBox" parent="." index="5"]
 visible = false
