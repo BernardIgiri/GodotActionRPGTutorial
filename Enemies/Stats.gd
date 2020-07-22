@@ -8,6 +8,9 @@ onready var health = max_health setget set_health
 signal no_health
 signal stats_changed
 
+func reset():
+	health = max_health
+
 func set_health(value):
 	if value != health:
 		if (value < 1):

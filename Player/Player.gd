@@ -26,11 +26,18 @@ onready var animationState = animationTree.get("parameters/playback")
 onready var sword = $HitBoxPivot/SwordHitBox
 onready var hurt_box = $HurtBox
 onready var invicible_effect = $InvicibleEffect
+onready var sprite = $Sprite
+onready var brightness_shader = preload("res://Effects/Brightness.shader")
+onready var dissolve_shader = preload("res://Effects/Dissolve.shader")
+onready var collision_shape = $CollisionShape2D
 
 func _ready():
 	stats.connect("no_health", self, "die")
 	animationTree.active = true
 	set_facing_vector(START_DIRECTION)
+	sprite.material = ShaderMaterial.new()
+	sprite.material.shader = brightness_shader
+	invicible_effect.play("default")
 
 func set_facing_vector(direction):
 	sword.knockback = direction * sword.knockback_strength
@@ -41,6 +48,14 @@ func set_facing_vector(direction):
 	animationTree.set("parameters/Roll/blend_position", direction)
 
 func die():
+	print("dying")
+	collision_shape.disabled = true
+	sprite.material = ShaderMaterial.new()
+	sprite.material.shader = dissolve_shader
+	animationPlayer.play("Death")
+
+func finish_death():
+	print("dead")
 	queue_free()
 
 func _process(delta):

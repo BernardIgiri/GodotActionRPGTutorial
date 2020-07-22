@@ -1,12 +1,17 @@
 extends Control
 
+var stats = PlayerStats
 onready var pause_sound = $PauseSound
 onready var unpause_sound = $UnPauseSound
 onready var menu_move_sound = $MenuMoveSound
 onready var menu_select_sound = $MenuSelectSound
 onready var menu = $Menu
+onready var die_timeout = $DieTimeout
+onready var resume_button = $Menu/ResumeButton
+onready var pause_title = $Label
 
 func _ready():
+	stats.connect("no_health", self, "die")
 	visible = false
 	for button in menu.get_children():
 		button.connect("focus_entered", self, "play_menu_move_sound")
@@ -19,15 +24,29 @@ func _input(event):
 			pause()
 
 func pause():
+	if get_tree().paused:
+		return
 	get_tree().paused = true
 	visible = true
-	pause_sound.play()
-	menu.get_child(0).grab_focus()
+	if stats.health > 0:
+		resume_button.disabled = false
+		resume_button.visible = true
+		pause_title.text = "Paused"
+		pause_sound.play()
+		menu.get_child(0).grab_focus()
+	else:
+		resume_button.disabled = true
+		resume_button.visible = false
+		pause_title.text = "You Died!"
+		menu.get_child(1).grab_focus()
 
 func unpause():
+	unpause_silent()
+	unpause_sound.play()
+	
+func unpause_silent():
 	get_tree().paused = false
 	visible = false
-	unpause_sound.play()
 
 func play_menu_move_sound():
 	menu_move_sound.play()
@@ -39,10 +58,18 @@ func _on_ExitButton_pressed():
 	play_menu_select_sound()
 
 func _on_RestartButton_pressed():
-	unpause()
+	unpause_silent()
+	stats.reset()
+	get_tree().reload_current_scene()
 
 func _on_ResumeButton_pressed():
 	unpause()
 
 func _on_MenuSelectSound_finished():
 	get_tree().quit()
+
+func die():
+	die_timeout.start()
+	
+func _on_DieTimeout_timeout():
+	pause()
