@@ -48,14 +48,12 @@ func set_facing_vector(direction):
 	animationTree.set("parameters/Roll/blend_position", direction)
 
 func die():
-	print("dying")
-	collision_shape.disabled = true
+	collision_shape.set_deferred("disabled", true)
 	sprite.material = ShaderMaterial.new()
 	sprite.material.shader = dissolve_shader
 	animationPlayer.play("Death")
 
 func finish_death():
-	print("dead")
 	queue_free()
 
 func _process(delta):
