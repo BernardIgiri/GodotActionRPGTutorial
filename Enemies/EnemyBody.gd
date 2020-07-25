@@ -22,6 +22,7 @@ var collision = false
 func _ready():
 	anchor_position = global_position
 	target_position = global_position
+	get_node("/root/World").enemy_count = get_node("/root/World").enemy_count + 1
 
 func positionEffect(effect):
 	var main = get_tree().current_scene
@@ -74,5 +75,6 @@ func _on_HurtBox_area_entered(area):
 	ai.hit()
 
 func _on_Stats_no_health():
+	get_node("/root/World").enemy_count = get_node("/root/World").enemy_count - 1
 	create_death_effect()
 	queue_free()
