@@ -7,11 +7,11 @@ onready var menu_move_sound = $MenuMoveSound
 onready var menu_select_sound = $MenuSelectSound
 onready var game_over_sound = $GameOver
 onready var victory_sound = $Victory
-onready var menu = $Menu
+onready var menu = $Control/Panel/MarginContainer/VBoxContainer/Menu
 onready var die_timeout = $DieTimeout
 onready var win_timeout = $WinTimeout
-onready var resume_button = $Menu/ResumeButton
-onready var pause_title = $Label
+onready var resume_button = $Control/Panel/MarginContainer/VBoxContainer/Menu/ResumeButton
+onready var pause_title = $Control/Panel/MarginContainer/VBoxContainer/Label
 
 func _ready():
 	stats.connect("no_health", self, "die")
